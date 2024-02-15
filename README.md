@@ -11,11 +11,11 @@
 
     1. Download files from this repository or create a clone using the code below.
 
-    $ git clone https://github.com/yetty300/Chess_Tournament_Manger
+    $ git clone https://github.com/yetty300/Chess_Tournament_Manager
 
     2. Navigate to the directory containing the repository.
 
-    $ cd Chess_Tournament_Manger
+    $ cd Chess_Tournament_Manager
 
     3. Using these terminal commands, create and activate a virtual environment.
 
@@ -35,11 +35,11 @@
 
     1. Download files from this repository or create a clone using the code below.
 
-    $ git clone https://github.com/yetty300/Chess_Tournament_Manger
+    $ git clone https://github.com/yetty300/Chess_Tournament_Manager
 
     2. Navigate to the directory containing the repository.
 
-    $ cd Chess_Tournament_Manger
+    $ cd Chess_Tournament_Manager
 
     3. Using these terminal commands, create and activate a virtual environment.
 
@@ -56,7 +56,7 @@
     ## To Generate a flake8 report
     1. Navigate to the directory containing the repository
 
-    $ cd Chess_Tournament_Manger
+    $ cd Chess_Tournament_Manager
 
     2. Run the following command
 
