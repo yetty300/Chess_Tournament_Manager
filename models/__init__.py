@@ -1,10 +1,8 @@
-
 from .club import ChessClub
 from .club_manager import ClubManager
 from .player import Player
 
 __all__ = ["Player", "ChessClub", "ClubManager"]
-
 
 
 class PersonException(Exception):
@@ -30,5 +28,3 @@ except InvalidDOBPersonException("Invalid Date of Birth"):
 except Exception:
 
     print("Exception caught.")
-
-

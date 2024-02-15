@@ -40,10 +40,10 @@ class ManageTournament:
         except ValueError:
             print("Invalid input. Please select a number")
 
-# Method advances the round of the tournament then call pair method and marks complete and finished if necessary
+    # Method advances the round of the tournament then call pair method and marks complete and finished if necessary
     def advance_round(self):
         if self.tournament.curr_round == self.tournament.num_rounds:
-            print("Tournmanet Finished")
+            print("Tournament Finished")
             self.menu()
         print("Are you sure you want to advance to the next round?")
         choice = input("yes or no: ").lower()
@@ -61,7 +61,7 @@ class ManageTournament:
             self.advance_round()
         self.menu()
 
-# Method prints the information of current loaded tournament
+    # Method prints the information of current loaded tournament
     def view_tournament(self):
         print("Tournament View")
         print(f"Name: {self.tournament.name}")
@@ -200,7 +200,7 @@ class ManageTournament:
             Tournament Name: {self.tournament.name}
             Start Date: {self.tournament.start_date}
             End Date: {self.tournament.end_date}
-            Players: 
+            Players:
             """
 
         for player_id, points in sorted_players:
@@ -217,7 +217,6 @@ class ManageTournament:
 
         print("Report generated successfully.")
         self.menu()
-
 
     # Method allows user to delete a tournament JSON by user input
     def delete(self):

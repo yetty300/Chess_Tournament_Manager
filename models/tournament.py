@@ -1,6 +1,8 @@
 import json
 import os
+
 """THis holds the information for a tournament as well as some basic functions (save, create and load)"""
+
 
 class Tournament:
     """
@@ -71,7 +73,7 @@ class Tournament:
                 print("No Tournament file to save.")
                 return
         else:
-            filename += f"data/tournaments.json"
+            filename += f"data/tournaments/{filename}.json"
 
         with open(filename, 'w') as fp:
             json.dump(self.format(), fp, indent=4)

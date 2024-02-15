@@ -1,5 +1,7 @@
 import random
+
 """This class holds information on a match, performs player pairings and calculates points"""
+
 
 class Match:
     # Default Constructor for a Match
@@ -10,7 +12,7 @@ class Match:
         self.points = points if points is not None else {}
         self.tournament = tournament
 
-    # Performs different pairing depending on the round number. In beginning pairs randomly, after pairs based on points
+    # Performs pairing based on rounds. In beginning pairs randomly, after pairs based on points
     def pairing(self):
         if self.tournament.curr_round == 1:
             all_players = self.tournament.players[:]
@@ -36,7 +38,7 @@ class Match:
 
             return matches
 
-# Method adds a point for a player if they are declared the winner of a match
+    # Method adds a point for a player if they are declared the winner of a match
     def calculate_points(self):
         for round_data in self.tournament.rounds:
             winner = round_data.get("winner")
@@ -47,6 +49,8 @@ class Match:
                         self.points[player] += 0.5
             else:
                 self.points[winner] += 1
+
+
 """
         self.points = {player: 0 for player in self.tournament.players}
 
