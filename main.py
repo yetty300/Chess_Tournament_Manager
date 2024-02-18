@@ -1,7 +1,7 @@
 import json
 import os
 from models.tournament import Tournament
-from manage_tournament import ManageTournament
+from controllers.manage_tournament import ManageTournament
 from manage_clubs import App
 
 choice = None
@@ -39,7 +39,9 @@ while True:
     choice = int(input("enter your choice: "))
 
     if choice == 1:
-        Tournament.create()
+        tourny = Tournament()
+        Tournament.create(tourny)
+        Tournament.save(tourny)
 
     elif choice == 2:
         if start_files:

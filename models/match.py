@@ -42,25 +42,15 @@ class Match:
     def calculate_points(self):
         for round_data in self.tournament.rounds:
             winner = round_data.get("winner")
+            if winner not in self.points:
+                self.points[winner] = 1
+            else:
+                self.points[winner] += 1
             if winner is None:
                 players = round_data.get("players")
                 if players:
                     for player in players:
-                        self.points[player] += 0.5
-            else:
-                self.points[winner] += 1
-
-
-"""
-        self.points = {player: 0 for player in self.tournament.players}
-
-        for round_data in self.tournament.rounds:
-            winner = round_data.get("winner")
-            if winner is None:
-                players = round_data.get("players")
-                if players:
-                    for player in players:
-                        self.points[player] += 0.5
-            else:
-                self.points[winner] += 1
-"""
+                        if player not in self.points:
+                            self.points[player] = 0.5
+                        else:
+                            self.points[player] += 0.5

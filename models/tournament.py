@@ -11,9 +11,9 @@ class Tournament:
     """
 
     # Constructor outline for a tournament (has empty attributes to start)
-    def __init__(self, name=None, start=None, end=None, num_rounds=None, curr_round=None, complete=False,
+    def __init__(self, name=None, start=None, end=None, num_rounds=None, curr_round=None, complete=None,
                  venue=None, players=None, finished=None, rounds=None):
-        self.finished = finished
+
         self.name = name
         self.start_date = start
         self.end_date = end
@@ -32,19 +32,20 @@ class Tournament:
                f"Completed: {self.complete}\nCurrent Round: {self.curr_round}"
 
     # Creates a new tournament through user input and formats it, so it outputs correctly on screen
-    @classmethod
-    def create(cls):
-        name = input("Enter tournament name: ")
-        start_date = input("Enter start date (DD-MM-YYYY): ")
-        end_date = input("Enter end date (DD-MM-YYYY): ")
-        venue = input("Enter venue: ")
-        num_rounds = int(input("Enter number of rounds: "))
-        curr_round = 1
-        complete = False
-        players = []
-        rounds = []
-        tournament = cls(name, start_date, end_date, num_rounds, curr_round, complete, venue, rounds, players)
-        tournament.save()
+
+    def create(self):
+        self.name = input("Enter tournament name: ")
+        self.start_date = input("Enter start date (DD-MM-YYYY): ")
+        self.end_date = input("Enter end date (DD-MM-YYYY): ")
+        self.venue = input("Enter venue: ")
+        self.num_rounds = int(input("Enter number of rounds: "))
+        self.curr_round = 1
+        self.complete = False
+        self.players = []
+        self.finished = False
+        self.rounds = []
+
+
 
     def format(self):
         """Serialize the tournament object to JSON-compatible format"""
