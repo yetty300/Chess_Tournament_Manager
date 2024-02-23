@@ -60,7 +60,7 @@
 
     2. Run the following command
 
-    $ flake8 --max-line-length 119 --formath=html ==htmldir=flake8_report
+    $ flake8 --max-line-length 119 --format=html --htmldir=flake8_report
 
     3. View report in the new flake8_report directory created in the repository
 
