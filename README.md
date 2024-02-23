@@ -53,7 +53,8 @@
 
     5. Open and run the file allcategories.py to download product data in CSV format and product images.
 
-    ## To Generate a flake8 report
+## To Generate a flake8 report
+    
     1. Navigate to the directory containing the repository
 
     $ cd Chess_Tournament_Manager
