@@ -45,8 +45,6 @@ class Tournament:
         self.finished = False
         self.rounds = []
 
-
-
     def format(self):
         """Serialize the tournament object to JSON-compatible format"""
         return {
