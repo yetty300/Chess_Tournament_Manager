@@ -57,6 +57,7 @@ class Tournament:
             "number_of_rounds": self.num_rounds,
             "current_round": self.curr_round,
             "completed": self.complete,
+            "finished":self.finished,
             "players": self.players,
             "rounds": self.rounds
         }
@@ -72,7 +73,7 @@ class Tournament:
                 print("No Tournament file to save.")
                 return
         else:
-            filename += f"data/tournaments/{filename}.json"
+            filename = f"data/tournaments/{filename}.json"
 
         with open(filename, 'w') as fp:
             json.dump(self.format(), fp, indent=4)

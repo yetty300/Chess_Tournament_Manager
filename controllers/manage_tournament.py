@@ -48,15 +48,16 @@ class ManageTournament:
         print("Are you sure you want to advance to the next round?")
         choice = input("yes or no: ").lower()
         if choice == "yes":
-            self.tournament.curr_round += 1
-            self.pair()
-            print("Advanced round by one, new matches generated.")
-            self.tournament.save()
+            if self.tournament.curr_round < self.tournament.num_rounds:
+                self.tournament.curr_round += 1
+                self.pair()
+                print("Advanced round by one, new matches generated.")
         elif choice == "no":
             print("Round not advanced.")
         else:
             print("Invalid choice")
             self.advance_round()
+        self.tournament.save()
         self.menu()
 
     # Method prints the information of current loaded tournament
@@ -75,6 +76,7 @@ class ManageTournament:
         self.menu()
 
     # Method registers players for tournament by searching a combined list of players then calls pair method
+
     def register_player(self):
         all_players = []
         files = []
@@ -102,8 +104,9 @@ class ManageTournament:
                     matching_players.append(player)
             return matching_players
 
+        add_another_player = True
         chosen_player_ids = []
-        while True:
+        while add_another_player:
             choice = input("Please type in name to search by name or ID to search by ID or 'quit' to exit: ").lower()
             if choice == "id":
                 chess_id = input("Enter chess ID: ")
@@ -113,7 +116,7 @@ class ManageTournament:
                 else:
                     print("Player not found with that ID.")
             elif choice == "quit":
-                self.menu()
+                break
             elif choice == "name":
                 name = input("Enter player name (partial or full): ")
                 matching_players = search_player_by_name(name)
@@ -132,8 +135,10 @@ class ManageTournament:
             else:
                 print("Invalid choice.")
 
-            another = input("Add another player? (yes/no): ")
-            if another.lower() != "yes":
+            add_another_player_input = input("Add another player? (yes/no): ")
+            add_another_player = add_another_player_input.lower() == "yes"
+
+            if add_another_player_input.lower() != "yes":
                 self.tournament.players.extend(chosen_player_ids)
                 self.tournament.save()
                 self.pair()
@@ -141,37 +146,38 @@ class ManageTournament:
 
     # Method allows user to enter the winner of the matches that are not complete yet
     def enter_results(self):
-        num = 1
         for match in self.tournament.rounds:
             if not match["completed"]:
-                while True:
-                    print(f"Match {num}: ")
-                    winner = input("Enter ID of player who won match: ")
-                    if winner.isalnum() and len(winner) > 0:
-                        if winner in match["players"]:
-                            match["winner"] = winner
-                            match["completed"] = True
-                            num += 1
-                            break
-                        else:
-                            print("Please enter a valid ID")
+                winner_input = input(f"Enter the winner of match {match['players'][0]} vs {match['players'][1]}: ")
+                if winner_input in match["players"]:
+                    match["winner"] = winner_input
+                    match["completed"] = True
+                else:
+                    print("Invalid input. Please enter a valid player ID.")
+
+            # Check if all matches are completed for the current round
+        if all(match["completed"] for match in self.tournament.rounds):
+            # Check if it's the final round
             if self.tournament.curr_round == self.tournament.num_rounds:
                 self.tournament.finished = True
                 self.tournament.complete = True
-        self.tournament.save()
-        self.menu()
+            self.tournament.save()  # Save the tournament data
+            self.menu()  # Return to the menu
+        else:
+            print("Not all matches are completed yet.")
 
     def generate_report(self):
         if not self.tournament.rounds:
             print("No round data initialized, unable to generate report")
-            self.menu()
+            return
+
         for rounds in self.tournament.rounds:
             print("Round printing")
             print(rounds)
-            complete = rounds["complete"]
-            if complete is False:
+            complete = rounds["completed"]
+            if not complete:
                 print("Cannot generate report. Some matches are not complete.")
-                self.menu()
+                return
 
         # Calculate points for all matches
         for round_matches in self.tournament.rounds:
@@ -198,14 +204,15 @@ class ManageTournament:
 
         # Generate report
         report_content = f"""
-            Tournament Report
-            -----------------
+Tournament Report
+-----------------
 
-            Tournament Name: {self.tournament.name}
-            Start Date: {self.tournament.start_date}
-            End Date: {self.tournament.end_date}
-            Players:
-            """
+Tournament Name: {self.tournament.name}
+Start Date: {self.tournament.start_date}
+End Date: {self.tournament.end_date}
+Players:
+            
+"""
 
         for player_id, points in sorted_players:
             report_content += f"Player ID: {player_id}, Accumulated Points: {points}\n"
@@ -214,13 +221,12 @@ class ManageTournament:
         for round_num, round_matches in enumerate(self.tournament.rounds, 1):
             report_content += f"Round {round_num}:\n"
             report_content += (f"  Match {round_num}: Winner - {round_matches['winner']},"
-                               f" Complete - {round_matches['complete']}\n")
+                               f" Complete - {round_matches['completed']}\n")
 
         with open(f"{self.tournament.name}_report.txt", "w") as file:
             file.write(report_content)
 
         print("Report generated successfully.")
-        self.menu()
 
     # Method allows user to delete a tournament JSON by user input
     def delete(self):
@@ -231,12 +237,12 @@ class ManageTournament:
             if os.path.exists(filename):
                 os.remove(filename)
                 print(f"Tournament '{tournament_name}' JSON deleted.")
+                return
             else:
                 print("No file with that name found.")
+                self.menu()
         except Exception as e:
             print(f"An error occurred while deleting the tournament JSON file: {e}")
-        finally:
-            self.menu()
 
     # Method calls paring function in Match and prints out results
     def pair(self):
@@ -251,6 +257,8 @@ class ManageTournament:
                     "winner": None
                 }
                 self.tournament.rounds.append(round_data)
-            self.tournament.save()
+            self.tournament.save()  # Saving the tournament after generating matches
         else:
             print("No matches generated")
+
+        self.menu()  # Returning to the menu after generating matches
